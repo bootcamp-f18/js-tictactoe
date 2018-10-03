@@ -12,12 +12,11 @@ document.onreadystatechange = function () {
   }
 };
 
-function gameOver() {
+function somebodyWon() {
   // Spaces:
   //  0  1  2
   //  3  4  5
   //  6  7  8
-  // Is this the last turn? If so, and no win, then game is over and its a draw
   return checkLineForWin([0, 1, 2]) || checkLineForWin([3, 4, 5]) || checkLineForWin([6, 7, 8]) || checkLineForWin([0, 3, 6]) || checkLineForWin([1, 4, 7]) || checkLineForWin([2, 5, 8]) || checkLineForWin([0, 4, 8]) || checkLineForWin([2, 4, 6]);
 }
 
@@ -51,9 +50,16 @@ function takeSpace() {
   this.innerHTML = symbols[turn % 2];
   this.removeEventListener('click', takeSpace);
 
-  if (gameOver()) {
-    console.log("GAME IS OVER!");
-  } else {}
+  if (somebodyWon()) {
+    message.innerHTML = symbols[turn % 2] + " won! Yay!";
+    removeClicksFromSpaces();
+  } else {
+    message.innerHTML = "It is " + symbols[(turn + 1) % 2] + "'s turn!";
+  }
+}
 
-  message.innerHTML = "It is " + symbols[(turn + 1) % 2] + "'s turn!";
+function removeClicksFromSpaces() {
+  for (let i = 0; i < spaces.length; i++) {
+    spaces[i].removeEventListener('click', takeSpace);
+  }
 }

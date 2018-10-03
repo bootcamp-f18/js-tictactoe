@@ -14,16 +14,12 @@ document.onreadystatechange = function() {
 
 
 
-function gameOver() {
+function somebodyWon() {
 
     // Spaces:
     //  0  1  2
     //  3  4  5
     //  6  7  8
-
-
-    // Is this the last turn? If so, and no win, then game is over and its a draw
-
 
     return (
         checkLineForWin([0,1,2]) ||
@@ -73,16 +69,19 @@ function takeSpace() {
     this.innerHTML = symbols[turn % 2];
     this.removeEventListener('click', takeSpace);
 
-
-    if (gameOver()) {
-        console.log("GAME IS OVER!");
+    if (somebodyWon()) {
+        message.innerHTML = symbols[turn % 2] + " won! Yay!";
+        removeClicksFromSpaces();
     }
     else {
-
+        message.innerHTML = "It is " + symbols[(turn + 1) % 2] + "'s turn!";
     }
 
+}
 
-    message.innerHTML = "It is " + symbols[(turn + 1) % 2] + "'s turn!";
 
-
+function removeClicksFromSpaces() {
+    for (let i = 0; i < spaces.length; i++) {
+        spaces[i].removeEventListener('click', takeSpace);
+    }
 }
